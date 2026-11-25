@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTS Pem Web</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .navbar-brand {
+            font-weight: 500;
+            font-size: 1.25rem;
+            color: #212529;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+        }
+
+        /* Alert */
+        .custom-alert {
+            background-color: #d1e7dd;
+            border-color: #badbcc;
+            color: #0f5132;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+        }
+
+        /* Card Styling */
+        .bio-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            overflow: hidden;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .bio-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Kartu Tambah (+) */
+        .add-card {
+            min-height: 540px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fff;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .add-card:hover {
+            background-color: #f9fbf9;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .btn-plus-circle {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #8bc34a, #689f38);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 46px;
+            font-weight: 300;
+            line-height: 1;
+            border: none;
+            box-shadow: 0 3px 8px rgba(104, 159, 56, 0.35);
+            transition: transform 0.2s ease;
+        }
+
+        .add-card:hover .btn-plus-circle {
+            transform: scale(1.06);
+        }
+
+        /* Foto Biodata */
+        .bio-img-wrapper {
+            width: 100%;
+            height: 360px;
+            overflow: hidden;
+            background-color: #f1f3f5;
+        }
+
+        .bio-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        /* Isi Kartu */
+        .bio-body {
+            padding: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .bio-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 0.45rem;
+        }
+
+        .bio-desc {
+            font-size: 0.92rem;
+            color: #495057;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        /* Footer Kartu (Tombol Edit & Hapus) */
+        .bio-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-edit-outline {
+            color: #0d6efd;
+            border: 1px solid #0d6efd;
+            background-color: #fff;
+            font-size: 0.875rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 5px;
+        }
+
+        .btn-edit-outline:hover {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .btn-hapus-outline {
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            background-color: #fff;
+            font-size: 0.875rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 5px;
+        }
+
+        .btn-hapus-outline:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        /* Footer Halaman */
+        footer {
+            margin-top: 4rem;
+            padding-bottom: 2.5rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .footer-links a {
+            color: #6c757d;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #212529;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">UTS Pem Web</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link active text-dark" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-muted" href="#">(Dina Citra Lestari)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled text-muted" aria-disabled="true">(24010110201)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Konten Utama -->
+    <main class="container my-4">
+        <!-- Alert Notifikasi -->
+        <div id="alertContainer">
+            <div class="alert custom-alert alert-dismissible fade show" role="alert">
+                <span id="alertMessage">Biodata berhasil diperbarui.</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+
+        <!-- Grid Kartu -->
+        <div class="row g-4 mt-1" id="cardGrid">
+            <!-- Kartu dirender lewat JavaScript -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="container text-center">
+        <div class="footer-links">
+            <a href="#">Home</a>
+            <a href="#">Features</a>
+            <a href="#">Pricing</a>
+            <a href="#">FAQs</a>
+            <a href="#">About</a>
+        </div>
+        <p class="mb-0">
+            &copy; 2025 Dibuat Sejujurjurnya Oleh Team (Dina Citra Lestari) dan (Mayumi Humairo) Tanpa Mencotek
+            dari Tim Lain
+        </p>
+    </footer>
+
+    <!-- Modal Tambah / Edit Biodata -->
+    <div class="modal fade" id="biodataModal" tabindex="-1" aria-labelledby="biodataModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="biodataForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="biodataModalLabel">Tambah Biodata</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="editIndex" value="-1">
+
+                        <div class="mb-3">
+                            <label for="inputNama" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="inputNama"
+                                placeholder="Contoh: rizki eka prasodjo" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputDeskripsi" class="form-label">Deskripsi / Peran & NIM</label>
+                            <textarea class="form-control" id="inputDeskripsi" rows="3"
+                                placeholder="Contoh: 12.11.5866 merupakan master dari uts ini dengan tugas membuat front-end dan mengirimkannya ke grup"
+                                required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputFotoUrl" class="form-label">URL Foto (Opsional jika unggah file)</label>
+                            <input type="url" class="form-control" id="inputFotoUrl"
+                                placeholder="https://example.com/foto.jpg">
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="inputFotoFile" class="form-label">Atau Unggah Foto dari Perangkat</label>
+                            <input type="file" class="form-control" id="inputFotoFile" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Konfirmasi Hapus</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Yakin ingin menghapus biodata ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="confirmDeleteBtn">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const STORAGE_KEY = 'uts_pem_web_biodata';
+
+        const defaultData = [
+            {
+                nama: 'dina citra',
+                deskripsi: '201 merupakan master dari uts ini dengan tugas membuat front-end dan mengirimkannya ke grup',
+                foto: 'c:\Users\ASUS\OneDrive\画像\friend\IMG-20250607-WA0029.jpg'
+            },
+            {
+                nama: 'mayumi',
+                deskripsi: 'dengan NIM 242 merupakan pegawai dan mempunyai tugas mengerjakan back-end pada UTS ini',
+                foto: 'c:\Users\ASUS\Downloads\WhatsApp Image 2026-11-25 at 09.35.45.jpeg'
+            }
+        ];
+
+        let biodataList = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultData;
+        let deleteTargetIndex = null;
+
+        const cardGrid = document.getElementById('cardGrid');
+        const alertContainer = document.getElementById('alertContainer');
+        const biodataModal = new bootstrap.Modal(document.getElementById('biodataModal'));
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(biodataList));
+        }
+
+        function showAlert(message) {
+            alertContainer.innerHTML = `
+        <div class="alert custom-alert alert-dismissible fade show" role="alert">
+          <span>${message}</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      `;
+        }
+
+        function renderCards() {
+            cardGrid.innerHTML = '';
+
+            const addCol = document.createElement('div');
+            addCol.className = 'col-12 col-md-4';
+            addCol.innerHTML = `
+        <div class="add-card" onclick="openAddModal()" title="Tambah Biodata">
+          <button type="button" class="btn-plus-circle" aria-label="Tambah">+</button>
+        </div>
+      `;
+            cardGrid.appendChild(addCol);
+
+            biodataList.forEach((item, index) => {
+                const col = document.createElement('div');
+                col.className = 'col-12 col-md-4';
+                col.innerHTML = `
+          <div class="bio-card">
+            <div class="bio-img-wrapper">
+              <img src="${item.foto}" alt="${item.nama}" onerror="this.src='https://via.placeholder.com/600x400?text=Foto+Biodata'">
+            </div>
+            <div class="bio-body">
+              <h5 class="bio-name">${item.nama}</h5>
+              <p class="bio-desc">${item.deskripsi}</p>
+            </div>
+            <div class="bio-footer">
+              <button type="button" class="btn btn-edit-outline" onclick="openEditModal(${index})">Edit</button>
+              <button type="button" class="btn btn-hapus-outline" onclick="openDeleteModal(${index})">Hapus</button>
+            </div>
+          </div>
+        `;
+                cardGrid.appendChild(col);
+            });
+        }
+
+        function openAddModal() {
+            document.getElementById('biodataModalLabel').textContent = 'Tambah Biodata';
+            document.getElementById('editIndex').value = '-1';
+            document.getElementById('biodataForm').reset();
+            biodataModal.show();
+        }
+
+        function openEditModal(index) {
+            const item = biodataList[index];
+            document.getElementById('biodataModalLabel').textContent = 'Edit Biodata';
+            document.getElementById('editIndex').value = index;
+            document.getElementById('inputNama').value = item.nama;
+            document.getElementById('inputDeskripsi').value = item.deskripsi;
+            document.getElementById('inputFotoUrl').value = item.foto.startsWith('data:') ? '' : item.foto;
+            document.getElementById('inputFotoFile').value = '';
+            biodataModal.show();
+        }
+
+        function openDeleteModal(index) {
+            deleteTargetIndex = index;
+            deleteModal.show();
+        }
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            if (deleteTargetIndex !== null) {
+                biodataList.splice(deleteTargetIndex, 1);
+                saveData();
+                renderCards();
+                showAlert('Biodata berhasil dihapus.');
+                deleteTargetIndex = null;
+                deleteModal.hide();
+            }
+        });
+
+        document.getElementById('biodataForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const index = parseInt(document.getElementById('editIndex').value, 10);
+            const nama = document.getElementById('inputNama').value.trim();
+            const deskripsi = document.getElementById('inputDeskripsi').value.trim();
+            const fotoUrl = document.getElementById('inputFotoUrl').value.trim();
+            const fileInput = document.getElementById('inputFotoFile');
+
+            const finalizeSave = (finalFoto) => {
+                if (index === -1) {
+                    biodataList.push({ nama, deskripsi, foto: finalFoto });
+                    showAlert('Biodata berhasil ditambahkan.');
+                } else {
+                    biodataList[index] = { nama, deskripsi, foto: finalFoto };
+                    showAlert('Biodata berhasil diperbarui.');
+                }
+                saveData();
+                renderCards();
+                biodataModal.hide();
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    finalizeSave(event.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                const existingFoto = index !== -1 ? biodataList[index].foto : 'https://via.placeholder.com/600x400?text=Foto+Biodata';
+                finalizeSave(fotoUrl || existingFoto);
+            }
+        });
+
+        renderCards();
+    </script>
+</body>
+
+</html>
